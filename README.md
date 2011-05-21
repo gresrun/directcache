@@ -1,7 +1,7 @@
 DirectCache
 ======
 
-DirectCache is currently a very simple attempt at creating an off-heap cache ala Terracotta BigMemory.
+DirectCache is currently a very simple attempt at creating an off-heap cache ala [Terracotta/Ehcache BigMemory](http://www.terracotta.org/bigmemory).
 
 DirectCache is a [Maven](http://maven.apache.org/) project and depends on nothing.
 
