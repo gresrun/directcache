@@ -31,7 +31,7 @@ public class DirectBufferSourceQueueImpl implements DirectBufferSource
 		}
 	}
 
-	public ByteBuffer poll()
+	public ByteBuffer get()
 	{
 		final ByteBuffer buffer = this.bufferQueue.poll();
 		return (buffer == null) ? create() : buffer;

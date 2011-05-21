@@ -35,7 +35,7 @@ public class ByteBufferOutputStream extends OutputStream
 	public void reset()
 	{
 		this.bufList = new ArrayList<ByteBuffer>(1);
-		this.bufList.add(this.bufferSource.poll());
+		this.bufList.add(this.bufferSource.get());
 	}
 
 	@Override
@@ -44,7 +44,7 @@ public class ByteBufferOutputStream extends OutputStream
 		ByteBuffer buffer = this.bufList.get(this.bufList.size() - 1);
 		if (buffer.remaining() < 1)
 		{
-			buffer = this.bufferSource.poll();
+			buffer = this.bufferSource.get();
 			this.bufList.add(buffer);
 		}
 		buffer.put((byte) b);
@@ -62,7 +62,7 @@ public class ByteBufferOutputStream extends OutputStream
 			buffer.put(b, tmpOff, remaining);
 			tmpLen -= remaining;
 			tmpOff += remaining;
-			buffer = this.bufferSource.poll();
+			buffer = this.bufferSource.get();
 			this.bufList.add(buffer);
 			remaining = buffer.remaining();
 		}

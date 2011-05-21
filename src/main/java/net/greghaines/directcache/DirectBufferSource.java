@@ -6,5 +6,5 @@ public interface DirectBufferSource
 {
 	void offer(ByteBuffer buffer);
 	
-	ByteBuffer poll();
+	ByteBuffer get();
 }
