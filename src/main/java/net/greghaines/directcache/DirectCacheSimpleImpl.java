@@ -167,7 +167,7 @@ public class DirectCacheSimpleImpl<K,V extends Serializable> implements DirectCa
 				try { oos.close(); } catch (Exception e){}
 			}
 		}
-		return bbos.getBufferList();
+		return bbos.getBuffers();
 	}
 
 	@SuppressWarnings("unchecked")

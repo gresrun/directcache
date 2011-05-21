@@ -8,24 +8,24 @@ import java.util.List;
 
 public class ByteBufferInputStream extends InputStream
 {
-	private final List<ByteBuffer> bufList;
+	private final List<ByteBuffer> buffers;
 	private int current = 0;
 
-	public ByteBufferInputStream(final List<ByteBuffer> bufList)
+	public ByteBufferInputStream(final List<ByteBuffer> buffers)
 	{
-		if (bufList == null)
+		if (buffers == null)
 		{
-			throw new IllegalArgumentException("bufList must not be null");
+			throw new IllegalArgumentException("buffers must not be null");
 		}
-		this.bufList = bufList;
+		this.buffers = buffers;
 	}
-	
+
 	public void rewind()
 	{
 		this.current = 0;
-		for (final ByteBuffer buf : this.bufList)
+		for (final ByteBuffer buffer : this.buffers)
 		{
-			buf.rewind();
+			buffer.rewind();
 		}
 	}
 
@@ -33,18 +33,30 @@ public class ByteBufferInputStream extends InputStream
 	public int read()
 	throws IOException
 	{
-		return (int)(getBuffer().get() & 0xFF);
+		return (int)(getNextBuffer().get() & 0xFF);
 	}
 
 	@Override
 	public int read(final byte[] b, final int off, final int len)
 	throws IOException
 	{
+		if (b == null)
+		{
+			throw new IllegalArgumentException("b must not be null");
+		}
+		if (off < 0)
+		{
+			throw new IndexOutOfBoundsException("off must not be negative: " + off);
+		}
+		if (len < 0)
+		{
+			throw new IndexOutOfBoundsException("len must not be negative: " + len);
+		}
 		if (len == 0)
 		{
 			return 0;
 		}
-		final ByteBuffer buffer = getBuffer();
+		final ByteBuffer buffer = getNextBuffer();
 		final int remaining = buffer.remaining();
 		if (len > remaining)
 		{
@@ -57,13 +69,13 @@ public class ByteBufferInputStream extends InputStream
 			return len;
 		}
 	}
-	
-	private ByteBuffer getBuffer()
+
+	private ByteBuffer getNextBuffer()
 	throws EOFException
 	{
-		while (this.current < this.bufList.size())
+		while (this.current < this.buffers.size())
 		{
-			final ByteBuffer buffer = this.bufList.get(this.current);
+			final ByteBuffer buffer = this.buffers.get(this.current);
 			if (buffer.hasRemaining())
 			{
 				return buffer;
