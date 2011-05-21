@@ -1,12 +1,12 @@
 package net.greghaines.directcache;
 
 import java.nio.ByteBuffer;
-import java.util.concurrent.BlockingDeque;
-import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 
 public class DirectBufferSourceQueueImpl implements DirectBufferSource
 {
-	private final BlockingDeque<ByteBuffer> bufferQueue;
+	private final BlockingQueue<ByteBuffer> bufferQueue;
 	private final int bufferCapacity;
 
 	public DirectBufferSourceQueueImpl(final int queueCapacity, final int bufferCapacity)
@@ -19,7 +19,7 @@ public class DirectBufferSourceQueueImpl implements DirectBufferSource
 		{
 			throw new IllegalArgumentException("bufferCapacity must be greater than zero");
 		}
-		this.bufferQueue = new LinkedBlockingDeque<ByteBuffer>(queueCapacity);
+		this.bufferQueue = new ArrayBlockingQueue<ByteBuffer>(queueCapacity);
 		this.bufferCapacity = bufferCapacity;
 	}
 
