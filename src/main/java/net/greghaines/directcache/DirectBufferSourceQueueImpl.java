@@ -1,14 +1,14 @@
 package net.greghaines.directcache;
 
 import java.nio.ByteBuffer;
-import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.LinkedBlockingDeque;
 
 public class DirectBufferSourceQueueImpl implements DirectBufferSource
 {
-	private final BlockingQueue<ByteBuffer> bufferQueue;
+	private final BlockingDeque<ByteBuffer> bufferQueue;
 	private final int bufferCapacity;
-	
+
 	public DirectBufferSourceQueueImpl(final int queueCapacity, final int bufferCapacity)
 	{
 		if (queueCapacity <= 0)
@@ -36,12 +36,12 @@ public class DirectBufferSourceQueueImpl implements DirectBufferSource
 		final ByteBuffer buffer = this.bufferQueue.poll();
 		return (buffer == null) ? create() : buffer;
 	}
-	
+
 	public void clear()
 	{
 		this.bufferQueue.clear();
 	}
-	
+
 	protected ByteBuffer create()
 	{
 		return ByteBuffer.allocateDirect(this.bufferCapacity);
