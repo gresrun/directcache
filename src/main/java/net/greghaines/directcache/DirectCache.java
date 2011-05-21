@@ -1,16 +1,28 @@
 package net.greghaines.directcache;
 
 import java.io.Serializable;
+import java.util.Map;
+import java.util.Set;
 
-public interface DirectCache
+public interface DirectCache<K,V extends Serializable>
 {
-	Serializable put(Object key, Serializable value);
+	V put(K key, V value);
 	
-	Serializable putIfAbsent(Object key, Serializable value);
+	V putIfAbsent(K key, V value);
 	
-	Serializable get(Object key);
+	void putAll(Map<? extends K,? extends V> map);
 	
-	Serializable remove(Object key);
+	V get(Object key);
+	
+	V remove(Object key);
 	
 	void clear();
+	
+	boolean isEmpty();
+	
+	int size();
+	
+	boolean containsKey(Object key);
+	
+	Set<K> keySet();
 }

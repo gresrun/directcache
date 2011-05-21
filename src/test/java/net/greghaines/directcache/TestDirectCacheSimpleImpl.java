@@ -6,8 +6,10 @@ import org.junit.Test;
 
 public class TestDirectCacheSimpleImpl
 {
-	private static final DirectBufferSource bufferSource = new DirectBufferSourceQueueImpl(5, 8192);
-	private static final DirectCache cache = new DirectCacheSimpleImpl(bufferSource);
+	private static final DirectBufferSource bufferSource = 
+		new DirectBufferSourceQueueImpl(5, 8192);
+	private static final DirectCache<String,Double> cache = 
+		new DirectCacheSimpleImpl<String,Double>(bufferSource);
 	
 	@After
 	public void clearCache()
@@ -19,14 +21,14 @@ public class TestDirectCacheSimpleImpl
 	public void simplePutGet()
 	{
 		final Double i = 3.2;
-		final Double nothing = (Double) cache.put("foo", i);
+		final Double nothing = cache.put("foo", i);
 		Assert.assertNull(nothing);
-		final Double j = (Double) cache.get("foo");
+		final Double j = cache.get("foo");
 		Assert.assertEquals(i, j);
 		final Double z = 4.1;
-		final Double iPrime = (Double) cache.put("foo", z);
+		final Double iPrime = cache.put("foo", z);
 		Assert.assertEquals(i, iPrime);
-		final Double k = (Double) cache.get("foo");
+		final Double k = cache.get("foo");
 		Assert.assertEquals(z, k);
 	}
 	
@@ -34,14 +36,14 @@ public class TestDirectCacheSimpleImpl
 	public void simplePutIfAbsentGet()
 	{
 		final Double i = 3.2;
-		final Double nothing = (Double) cache.putIfAbsent("foo", i);
+		final Double nothing = cache.putIfAbsent("foo", i);
 		Assert.assertNull(nothing);
-		final Double j = (Double) cache.get("foo");
+		final Double j = cache.get("foo");
 		Assert.assertEquals(i, j);
 		final Double z = 4.1;
-		final Double iPrime = (Double) cache.putIfAbsent("foo", z);
+		final Double iPrime = cache.putIfAbsent("foo", z);
 		Assert.assertEquals(i, iPrime);
-		final Double k = (Double) cache.get("foo");
+		final Double k = cache.get("foo");
 		Assert.assertEquals(i, k);
 	}
 	
@@ -49,11 +51,11 @@ public class TestDirectCacheSimpleImpl
 	public void simplePutRemoveGet()
 	{
 		final Double i = 3.2;
-		final Double nothing = (Double) cache.put("foo", i);
+		final Double nothing = cache.put("foo", i);
 		Assert.assertNull(nothing);
-		final Double j = (Double) cache.remove("foo");
+		final Double j = cache.remove("foo");
 		Assert.assertEquals(i, j);
-		final Double z = (Double) cache.get("foo");
+		final Double z = cache.get("foo");
 		Assert.assertNull(z);
 	}
 }
