@@ -22,6 +22,7 @@ public class ByteBufferInputStream extends InputStream
 	
 	public void rewind()
 	{
+		this.current = 0;
 		for (final ByteBuffer buf : this.bufList)
 		{
 			buf.rewind();
