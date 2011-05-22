@@ -198,11 +198,11 @@ public class DirectCacheSimpleImpl<K,V extends Serializable> implements DirectCa
 		}
 		catch (IOException ioe)
 		{
-			throw new SerializationException(ioe);
+			throw new DeserializationException(ioe);
 		}
 		catch (ClassNotFoundException cnfe)
 		{
-			throw new SerializationException(cnfe);
+			throw new DeserializationException(cnfe);
 		}
 		finally
 		{
