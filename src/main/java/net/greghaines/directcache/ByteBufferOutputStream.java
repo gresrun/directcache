@@ -9,7 +9,7 @@ import java.util.List;
 public class ByteBufferOutputStream extends OutputStream
 {
 	private final DirectBufferSource bufferSource;
-	private final List<ByteBuffer> buffers;
+	private final List<ByteBuffer> buffers = new ArrayList<ByteBuffer>(1);
 
 	public ByteBufferOutputStream(final DirectBufferSource bufferSource)
 	{
@@ -18,7 +18,6 @@ public class ByteBufferOutputStream extends OutputStream
 			throw new IllegalArgumentException("bufferSource must not be null");
 		}
 		this.bufferSource = bufferSource;
-		this.buffers = new ArrayList<ByteBuffer>(1);
 		this.buffers.add(this.bufferSource.get());
 	}
 
