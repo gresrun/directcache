@@ -27,6 +27,7 @@ public class DirectBufferSourceQueueImpl implements DirectBufferSource
 	{
 		if (buffer != null && buffer.isDirect() && !buffer.isReadOnly())
 		{ // Only want writable, direct buffers
+			buffer.limit(buffer.capacity()).rewind(); // Reset before we offer
 			this.bufferQueue.offer(buffer);
 		}
 	}
