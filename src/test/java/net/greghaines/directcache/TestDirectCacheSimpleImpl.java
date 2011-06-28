@@ -73,4 +73,45 @@ public class TestDirectCacheSimpleImpl
 		final Double z = cache.get("foo");
 		Assert.assertNull(z);
 	}
+	
+	@Test
+	public void multiPutGet()
+	{
+		final Double d1 = 1.11;
+		final Double d2 = 2.11;
+		final Double d3 = 3.11;
+		final Double d4 = 4.11;
+		final Double d5 = 5.11;
+		cache.put("foo1", d1);
+		cache.put("foo2", d2);
+		cache.put("foo3", d3);
+		cache.put("foo4", d4);
+		cache.put("foo5", d5);
+		for (int i = 0; i < 1000; i++)
+		{
+			try
+			{
+				Assert.assertEquals(d1, cache.remove("foo1"));
+				Assert.assertEquals(d2, cache.remove("foo2"));
+				Assert.assertEquals(d3, cache.remove("foo3"));
+				Assert.assertEquals(d4, cache.remove("foo4"));
+				Assert.assertEquals(d5, cache.remove("foo5"));
+				cache.put("foo1", d1);
+				cache.put("foo2", d2);
+				cache.put("foo3", d3);
+				cache.put("foo4", d4);
+				cache.put("foo5", d5);
+			}
+			catch (RuntimeException re)
+			{
+				System.err.println("i=" + i);
+				throw re;
+			}
+			catch (Error err)
+			{
+				System.err.println("i=" + i);
+				throw err;
+			}
+		}
+	}
 }
