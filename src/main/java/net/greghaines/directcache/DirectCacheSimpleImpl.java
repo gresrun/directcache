@@ -111,13 +111,17 @@ public class DirectCacheSimpleImpl<K,V extends Serializable> implements DirectCa
 		V oldValue = null;
 		if (value != null)
 		{
-			final List<ByteBuffer> oldBufList = this.bufferMap.putIfAbsent(key, serialize(value));
+			final List<ByteBuffer> newBufList = serialize(value);
+			final List<ByteBuffer> oldBufList = this.bufferMap.putIfAbsent(key, newBufList);
 			if (oldBufList != null)
 			{
 				synchronized (oldBufList)
-				{
+				{ // Return the existing value
 					oldValue = deserialize(oldBufList);
-					for (final ByteBuffer buf : oldBufList)
+				}
+				synchronized (newBufList)
+				{ // Recycle the buffers used to create the value since they we're used
+					for (final ByteBuffer buf : newBufList)
 					{
 						this.bufferSource.offer(buf);
 					}
