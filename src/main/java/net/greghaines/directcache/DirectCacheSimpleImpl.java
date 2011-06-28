@@ -20,6 +20,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -45,7 +46,21 @@ public class DirectCacheSimpleImpl<K,V extends Serializable> implements DirectCa
 
 	public void clear()
 	{
+		final List<List<ByteBuffer>> allBuffers = new ArrayList<List<ByteBuffer>>(this.bufferMap.values());
 		this.bufferMap.clear();
+		for (final List<ByteBuffer> oldBufList : allBuffers)
+		{
+			if (oldBufList != null)
+			{
+				synchronized (oldBufList)
+				{
+					for (final ByteBuffer buf : oldBufList)
+					{
+						this.bufferSource.offer(buf);
+					}
+				}
+			}
+		}
 	}
 
 	public boolean isEmpty()
